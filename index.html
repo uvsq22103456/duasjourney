@@ -1,0 +1,521 @@
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Samia — Mes Duas 🌸</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cream: #FDF8F3;
+            --text: #3D2B2B;
+            --card-bg: #FFFFFF;
+            --border: #F0E0D6;
+        }
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            background-image:
+                radial-gradient(ellipse 80% 50% at 20% 0%, rgba(232,164,164,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(179,157,219,0.12) 0%, transparent 60%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        .amiri { font-family: 'Amiri', serif; }
+        .playfair { font-family: 'Playfair Display', serif; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 4px 15px rgba(196,122,122,0.05); }
+        .rose-btn { background: linear-gradient(135deg, #E8A4A4, #C47A7A); color: white; border-radius: 16px; font-weight: 700; box-shadow: 0 4px 16px rgba(196,122,122,0.3); transition: transform 0.1s; }
+        .rose-btn:active { transform: scale(0.96); }
+        details summary::-webkit-details-marker { display: none; }
+        
+        @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        .fade-up { animation: fadeUp 0.4s ease both; }
+        @keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .anim-pulse { animation: pulse-soft 2s infinite ease-in-out; }
+    </style>
+
+    <script>
+        // ============ 1. LES DONNÉES DU BUILDER ============
+        const DUA_CATEGORIES = [
+            {
+                id: "coeur", title: "La Paix Intérieure", subtitle: "Cœur, Foi & Apprentissage", emoji: "🤍", color: "bg-slate-50 border-slate-200", textC: "text-slate-600",
+                situations: [
+                    {
+                        title: "Retrouver la lumière (Baisse de foi)", desc: "Quand le cœur est dur et que la prière devient mécanique.", praise: "Louange à Celui qui ressuscite les terres mortes après leur sécheresse.",
+                        allahName: { ar: "المحيي", name: "Al-Muhyî", meaning: "Celui qui donne la vie. Il peut faire revivre un cœur asséché par la baisse de foi d'un simple souffle de Sa miséricorde." },
+                        dua: { ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", tr: "Ya Muqallibal-qulub, thabbit qalbi 'ala dinik", fr: "Ô Toi qui retournes les cœurs, affermis mon cœur sur Ta religion." }
+                    },
+                    {
+                        title: "Apaiser la tempête (Angoisse & Stress)", desc: "Quand l'avenir fait peur ou que la poitrine se serre.", praise: "Louange à Allah, Celui qui contrôle absolument tout ce qui échappe à mon contrôle.",
+                        allahName: { ar: "السلام", name: "As-Salâm", meaning: "La Paix. Toute sécurité, tout apaisement physique et mental proviennent de Lui seul." },
+                        dua: { ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ", tr: "Allahumma inni a'udhu bika minal-hammi wal-hazan", fr: "Ô Allah, je cherche refuge auprès de Toi contre les soucis et la tristesse." }
+                    },
+                    {
+                        title: "La prière n'importe où (Khushu au travail)", desc: "Pour réussir à prier à l'heure, sereinement, même au milieu du bureau.", praise: "Louange à Celui qui mérite d'être adoré en tout lieu et en toute circonstance.",
+                        allahName: { ar: "المعين", name: "Al-Mu'în", meaning: "Celui qui apporte l'aide. Demande-Lui de t'aider à L'adorer, Il te facilitera les choses, même face au regard des autres." },
+                        dua: { ar: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ، وَشُكْرِكَ، وَحُسْنِ عِبَادَتِكَ", tr: "Allahumma a'inni 'ala dhikrika, wa shukrika, wa husni 'ibadatik", fr: "Ô Allah, aide-moi à Te mentionner, à Te remercier et à parfaire mon adoration." }
+                    },
+                    {
+                        title: "Le lien avec le Livre (Apprendre le Coran)", desc: "Pour que la mémorisation devienne fluide et facile pour nous deux.", praise: "Louange à Celui qui a fait descendre le Coran comme une lumière et une guérison.",
+                        allahName: { ar: "النور", name: "An-Nûr", meaning: "La Lumière. Le Coran est une lumière, et Celui qui possède cette lumière est le seul à pouvoir éclairer ta mémoire." },
+                        dua: { ar: "رَبِّ زِدْنِي عِلْمًا", tr: "Rabbi zidni 'ilma", fr: "Ô mon Seigneur, accrois mon savoir !" }
+                    }
+                ]
+            },
+            {
+                id: "union", title: "L'Union Bénie", subtitle: "Mariage, Famille & Futur", emoji: "💍", color: "bg-rose-50 border-rose-200", textC: "text-rose-600",
+                situations: [
+                    {
+                        title: "Adoucir les cœurs de la famille", desc: "Pour que mon père et ma grand-mère voient le bien dans cette union.", praise: "Louange à Allah, Celui qui détient le cœur de tous les êtres humains entre Ses doigts et les tourne comme Il le veut.",
+                        allahName: { ar: "اللطيف", name: "Al-Latîf", meaning: "Le Subtil. Il dénoue les situations les plus complexes avec une douceur invisible et amène le bien par des chemins inattendus." },
+                        dua: { ar: "اللَّهُمَّ أَلِّفْ بَيْنَ قُلُوبِنَا", tr: "Allahumma allif bayna qulubina", fr: "Ô Allah, unis nos cœurs et adoucis-les les uns envers les autres." }
+                    },
+                    {
+                        title: "Débloquer les causes matérielles", desc: "Motivation, permis, études, appartement... Pour que les portes s'ouvrent.", praise: "Louange à Celui qui facilite toute difficulté et Qui est le maître des causes et des conséquences.",
+                        allahName: { ar: "الفتاح", name: "Al-Fattâh", meaning: "L'Ouvreur. C'est Lui qui ouvre la voie vers la réussite, les examens (le code), et débloque les situations fermées." },
+                        dua: { ar: "اللَّهُمَّ لاَ سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلاً", tr: "Allahumma la sahla illa ma ja'altahu sahlan...", fr: "Ô Allah, il n'y a de facile que ce que Tu rends facile, et Tu peux, si Tu le veux, rendre la difficulté facile." }
+                    },
+                    {
+                        title: "L'harmonie entre les deux familles", desc: "Pour qu'il s'intègre naturellement et que le respect règne.", praise: "Louange à Celui qui a créé les âmes par paires pour qu'elles trouvent la paix l'une auprès de l'autre.",
+                        allahName: { ar: "الودود", name: "Al-Wadûd", meaning: "L'Affectueux. Celui qui met l'amour sincère et la miséricorde pure entre les cœurs de Ses serviteurs." },
+                        dua: { ar: "وَأَلْقَيْتُ عَلَيْكَ مَحَبَّةً مِّنِّي", tr: "Wa alqaytu 'alayka mahabbatan minni", fr: "Et J'ai répandu sur toi une affection de Ma part." }
+                    },
+                    {
+                        title: "Un foyer de rires et de foi", desc: "Pour un avenir stable, complice, et à l'aise financièrement.", praise: "Louange à Celui qui donne sans compter et qui bénit les unions fondées Son amour.",
+                        allahName: { ar: "الوهاب", name: "Al-Wahhâb", meaning: "Le Tout-Donateur. Il donne des cadeaux immenses sans qu'on ait besoin de les mériter, par pure générosité." },
+                        dua: { ar: "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ", tr: "Rabbana hab lana min azwajina wa dhurriyyatina qurrata a'yun", fr: "Seigneur, fais que nos conjoints et nos enfants soient une source de joie pour nos yeux." }
+                    }
+                ]
+            },
+            {
+                id: "entourage", title: "L'Entourage", subtitle: "Guidée, Santé & Amies", emoji: "🫀", color: "bg-emerald-50 border-emerald-200", textC: "text-emerald-600",
+                situations: [
+                    {
+                        title: "La guidée profonde de ceux que j'aime", desc: "Pour que la foi s'enracine vraiment dans le cœur de mon entourage.", praise: "Louange à Celui qui guide qui Il veut vers un chemin droit, Celui qui est plus proche de nous que notre veine jugulaire.",
+                        allahName: { ar: "الهادي", name: "Al-Hâdî", meaning: "Le Guide. Toi tu ne peux guider que ceux que tu aimes, mais Al-Hâdî place la lumière directement dans les cœurs." },
+                        dua: { ar: "اللَّهُمَّ اهْدِنِي وَسَدِّدْنِي", tr: "Allahumma-hdini wa saddidni (ajouter : wa-hdihim)", fr: "Ô Allah, guide-moi (et guide-les) et maintiens-nous sur la droiture." }
+                    },
+                    {
+                        title: "Mes amies, jusqu'au Paradis", desc: "Pour que notre amitié soit pure et nous sauve le Jour du Jugement.", praise: "Louange à Celui qui rassemble les gens qui se sont aimés pour Lui sous l'ombre de Son Trône.",
+                        allahName: { ar: "الجامع", name: "Al-Jâmi'", meaning: "Le Rassembleur. Celui qui réunira les âmes qui se sont aimées en Lui, dans les jardins du Paradis." },
+                        dua: { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ، وَحُبَّ مَنْ يُحِبُّكَ", tr: "Allahumma inni as'aluka hubbaka, wa hubba man yuhibbuk", fr: "Ô Allah, je Te demande Ton amour, et l'amour de ceux qui T'aiment." }
+                    },
+                    {
+                        title: "Le bouclier (Santé & Protection)", desc: "Pour préserver ma famille et mes amis de la maladie et des peines.", praise: "Louange à Celui qui guérit, Celui qui protège lorsque toutes les portes sont fermées.",
+                        allahName: { ar: "الحفيظ", name: "Al-Hafîz", meaning: "Le Gardien. Il veille sur ceux que tu aimes, préserve leur santé et les protège des épreuves lourdes." },
+                        dua: { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ", tr: "Allahumma inni as'alukal-'afiyata fid-dunya wal-akhirah", fr: "Ô Allah, je Te demande la préservation (la santé et le bien-être) dans ce monde et dans l'au-delà." }
+                    }
+                ]
+            },
+            {
+                id: "misericorde", title: "L'Au-delà", subtitle: "Grand-Père, Pardon & Belle fin", emoji: "🕊️", color: "bg-indigo-50 border-indigo-200", textC: "text-indigo-600",
+                situations: [
+                    {
+                        title: "Lumière sur sa tombe (Pour mon grand-père)", desc: "Pour qu'Allah élargisse sa tombe et lui fasse miséricorde.", praise: "Louange au Roi du Jour du Jugement, dont la miséricorde précède la colère.",
+                        allahName: { ar: "الرحيم", name: "Ar-Rahîm", meaning: "Le Très Miséricordieux. Sa douceur envers les croyants après leur mort est immense et enveloppante." },
+                        dua: { ar: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ", tr: "Allahumma-ghfir lahu warhamhu wa 'afihi wa'fu 'anhu", fr: "Ô Allah, pardonne-lui, fais-lui miséricorde, accorde-lui le salut et efface ses fautes." }
+                    },
+                    {
+                        title: "La belle fin (Husn al-Khatimah)", desc: "Pour qu'Allah ne reprenne nos âmes que lorsqu'Il est pleinement satisfait.", praise: "Louange au Premier qui n'a pas de début, et au Dernier qui n'a pas de fin.",
+                        allahName: { ar: "الولي", name: "Al-Waliyy", meaning: "Le Protecteur Allié. C'est Lui qui s'occupe de toi dans cette vie, et Il ne t'abandonnera pas au moment de la mort." },
+                        dua: { ar: "تَوَفَّنِي مُسْلِمًا وَأَلْحِقْنِي بِالصَّالِحِينَ", tr: "Tawaffani musliman wa alhiqni bis-salihin", fr: "Fais-moi mourir entièrement soumis et rejoins-moi aux gens de bien." }
+                    },
+                    {
+                        title: "Le pardon des fautes cachées", desc: "Quand le poids des erreurs passées se fait sentir.", praise: "Louange à Allah, Qui ne ferme jamais la porte de Son pardon tant que le cœur bat.",
+                        allahName: { ar: "الغفور", name: "Al-Ghafûr", meaning: "Le Grand Pardonneur. Il efface les péchés, peu importe leur nombre ou leur taille, si tu reviens sincèrement vers Lui." },
+                        dua: { ar: "رَبِّ إِنِّي ظَلَمْتُ نَفْسِي فَاغْفِرْ لِي", tr: "Rabbi inni zhalamtu nafsi faghfir li", fr: "Seigneur, je me suis fait du tort à moi-même ; pardonne-moi." }
+                    }
+                ]
+            },
+            {
+                id: "dunya", title: "La Dunya", subtitle: "Réussite, Subsistance & Choix", emoji: "🌱", color: "bg-amber-50 border-amber-200", textC: "text-amber-600",
+                situations: [
+                    {
+                        title: "L'ouverture (Subsistance & Logement)", desc: "Quand une situation semble bloquée financièrement ou matériellement.", praise: "Louange à Celui dont les trésors des cieux et de la terre ne s'épuisent jamais.",
+                        allahName: { ar: "الرزاق", name: "Ar-Razzâq", meaning: "Le Pourvoyeur. Il assure la subsistance de chaque créature. Fais-Lui confiance pour tes besoins financiers." },
+                        dua: { ar: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ", tr: "Allahummak-fini bihalalika 'an haramik", fr: "Ô Allah, suffis-moi par ce que Tu as rendu licite pour m'éviter ce que Tu as rendu illicite." }
+                    },
+                    {
+                        title: "Demander le bon choix (Istikhara)", desc: "Avant de prendre une grande décision pour l'avenir.", praise: "Louange à Celui qui connaît le passé, le présent, l'avenir et ce qui n'a pas eu lieu.",
+                        allahName: { ar: "الخبير", name: "Al-Khabîr", meaning: "Le Bien-Informé. Il connaît les conséquences de chaque choix dans les moindres détails pour ta religion et ta vie." },
+                        dua: { ar: "اللَّهُمَّ خِرْ لِي وَاخْتَرْ لِي", tr: "Allahumma khir li wakhtar li", fr: "Ô Allah, choisis pour moi et sélectionne pour moi le meilleur." }
+                    }
+                ]
+            }
+        ];
+
+        // ============ 2. LES DUAS DU QUOTIDIEN (NOUVEAU) ============
+       
+        // ============ 2. LES DUAS DU QUOTIDIEN (NOUVEAU) ============
+        const DAILY_DUAS = [
+            {
+                icon: "🌅", title: "Matin & Soir",
+                list: [
+                    { t: "Au réveil", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", fr: "Louange à Allah qui nous a rendu la vie après nous avoir fait mourir, et vers Lui est la résurrection." },
+                    { t: "Le matin", ar: "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ", fr: "Ô Allah, c'est par Toi que nous entrons dans le matin et le soir, par Toi que nous vivons et mourons, et vers Toi est la résurrection." },
+                    { t: "Le soir", ar: "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ", fr: "Ô Allah, c'est par Toi que nous entrons dans le soir et le matin, par Toi que nous vivons et mourons, et vers Toi est le retour." }
+                ]
+            },
+            {
+                icon: "🕌", title: "La Prière",
+                list: [
+                    { t: "Avant Al-Fatiha (Dua d'ouverture)", ar: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ", fr: "Gloire et pureté à Toi, ô Allah, et à Toi la louange. Que Ton Nom soit béni, que Ta Majesté soit exaltée, et il n'y a pas d'autre divinité en dehors de Toi." },
+                    { t: "En se prosternant (Sujood)", ar: "سُبْحَانَ رَبِّيَ الأَعْلَى", fr: "Gloire à mon Seigneur le Très Haut. (À dire 3 fois)" },
+                    { t: "Entre les deux prosternations", ar: "رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي", fr: "Seigneur, pardonne-moi. Seigneur, pardonne-moi." }
+                ]
+            },
+            {
+                icon: "🛡️", title: "Protections & Sourates",
+                list: [
+                    { t: "Ayat Al-Kursi (Quand le lire ?)", ar: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", fr: "À lire : Après chaque prière obligatoire, le matin, le soir, et avant de dormir pour être protégé toute la nuit." },
+                    { t: "Les 3 'Qul' (Protectrices)", ar: "الإخلاص، الفلق، الناس", fr: "À lire : 1 fois après chaque prière. 3 fois le matin et le soir. 3 fois avant de dormir en passant ses mains sur son corps." },
+                    { t: "Sourate Al-Mulk", ar: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ...", fr: "À lire : Tous les soirs avant de s'endormir. Elle protège du châtiment de la tombe." }
+                ]
+            },
+            {
+                icon: "🍽️", title: "Repas & Jeûne",
+                list: [
+                    { t: "Intention du jeûne (Dans le cœur)", ar: "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ", fr: "J'ai l'intention de jeûner demain pour le mois de Ramadan. (L'intention se fait surtout dans le cœur avant l'aube)." },
+                    { t: "Avant de manger", ar: "بِسْمِ اللَّهِ", fr: "Au nom d'Allah. (Si on oublie : Bismillahi awwalahu wa akhirahu)" },
+                    { t: "Après avoir mangé", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ", fr: "Louange à Allah qui m'a nourri de cela et me l'a accordé sans aucune force ni puissance de ma part." },
+                    { t: "Rupture du jeûne (Iftar)", ar: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ", fr: "La soif est dissipée, les veines sont irriguées, et la récompense est assurée si Allah le veut." }
+                ]
+            },
+            {
+                icon: "🚪", title: "Maison & Transport",
+                list: [
+                    { t: "En sortant de chez soi", ar: "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", fr: "Au nom d’Allah, je place ma confiance en Allah, il n'y a de force ni de puissance que par Allah." },
+                    { t: "En montant en voiture", ar: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ", fr: "Gloire à Celui qui a mis ceci (ce véhicule) à notre disposition alors que nous n'étions pas capables de le dominer." }
+                ]
+            }
+        ];
+
+        // ============ ETAT ============
+        let currentSituation = null;
+        let currentStep = 1;
+
+        // ============ NAVIGATION ============
+        function showView(id) {
+            ['home-view', 'situations-view', 'builder-view', 'success-view', 'journal-view', 'daily-view'].forEach(v => {
+                document.getElementById(v).classList.add('hidden');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        // ============ RENDER ACCUEIL ============
+        function renderHome() {
+            const grid = document.getElementById('categories-grid');
+            grid.innerHTML = DUA_CATEGORIES.map(cat => `
+                <button onclick="openCategory('${cat.id}')" class="card p-5 text-left active:scale-95 transition-all w-full flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 ${cat.color}">${cat.emoji}</div>
+                    <div>
+                        <p class="font-bold text-base text-stone-800">${cat.title}</p>
+                        <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold mt-1">${cat.subtitle}</p>
+                    </div>
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // ============ RENDER SITUATIONS ============
+        window.openCategory = (catId) => {
+            const cat = DUA_CATEGORIES.find(c => c.id === catId);
+            document.getElementById('sit-title').innerText = cat.title;
+            document.getElementById('sit-emoji').innerText = cat.emoji;
+            
+            const list = document.getElementById('situations-list');
+            list.innerHTML = cat.situations.map((sit, idx) => `
+                <button onclick="startDua('${cat.id}', ${idx})" class="card p-5 text-left active:scale-95 transition-all w-full mb-3 fade-up" style="animation-delay: ${idx * 0.1}s">
+                    <p class="font-bold text-sm ${cat.textC} mb-1">${sit.title}</p>
+                    <p class="text-xs text-stone-500 leading-relaxed">${sit.desc}</p>
+                </button>
+            `).join('');
+            
+            showView('situations-view');
+        };
+
+        // ============ DEMARRER LE BUILDER ============
+        window.startDua = (catId, sitIdx) => {
+            const cat = DUA_CATEGORIES.find(c => c.id === catId);
+            currentSituation = cat.situations[sitIdx];
+            currentStep = 1;
+            renderBuilderStep();
+            showView('builder-view');
+        };
+
+        // ============ LOGIQUE DU BUILDER ============
+        function renderBuilderStep() {
+            const content = document.getElementById('builder-content');
+            const progress = document.getElementById('builder-progress');
+            progress.style.width = `${(currentStep / 5) * 100}%`;
+            document.getElementById('step-indicator').innerText = `Étape ${currentStep} / 5`;
+
+            content.innerHTML = '';
+            
+            let html = '';
+            if (currentStep === 1) {
+                document.getElementById('step-title').innerText = "1. La Louange (Alhamdulillah)";
+                html = `
+                    <div class="fade-up text-center pt-8 pb-4">
+                        <div class="text-5xl mb-6 anim-pulse">✨</div>
+                        <p class="text-sm text-stone-500 italic mb-6">On ne demande pas à un Roi sans d'abord Le remercier.</p>
+                        <div class="card p-6 bg-amber-50 border-amber-200 shadow-sm text-left">
+                            <p class="text-amber-800 font-medium leading-relaxed text-lg">"${currentSituation.praise}"</p>
+                        </div>
+                    </div>`;
+            } 
+            else if (currentStep === 2) {
+                document.getElementById('step-title').innerText = "2. Salawat sur le Prophète ﷺ";
+                html = `
+                    <div class="fade-up text-center pt-8 pb-4">
+                        <div class="text-5xl mb-6 anim-pulse">🕊️</div>
+                        <p class="text-sm text-stone-500 italic mb-6">"L'invocation est suspendue entre le ciel et la terre, rien n'en monte tant que tu n'as pas prié sur ton Prophète."</p>
+                        <div class="card p-6 bg-slate-50 border-slate-200 shadow-sm text-left">
+                            <p class="amiri text-2xl text-slate-700 text-right mb-4 leading-loose">اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ</p>
+                            <p class="text-slate-800 font-medium leading-relaxed">"Allahumma salli wa sallim 'ala nabiyyina Muhammad."</p>
+                        </div>
+                    </div>`;
+            }
+            else if (currentStep === 3) {
+                document.getElementById('step-title').innerText = "3. Le Nom Parfait d'Allah";
+                html = `
+                    <div class="fade-up text-center pt-8 pb-4">
+                        <div class="text-5xl mb-6 anim-pulse">🌿</div>
+                        <div class="card p-6 shadow-md border-rose-200 text-center" style="background: linear-gradient(to bottom right, #ffffff, #FDF8F3);">
+                            <p class="amiri text-5xl text-rose-500 mb-4">${currentSituation.allahName.ar}</p>
+                            <p class="playfair text-3xl font-bold text-stone-800 mb-2">Ya ${currentSituation.allahName.name}</p>
+                            <p class="text-sm text-stone-600 leading-relaxed italic border-t pt-4 mt-2">"${currentSituation.allahName.meaning}"</p>
+                        </div>
+                    </div>`;
+            }
+            else if (currentStep === 4) {
+                document.getElementById('step-title').innerText = "4. L'Invocation Prophétique";
+                html = `
+                    <div class="fade-up pt-4 pb-4">
+                        <div class="card p-6 shadow-sm border-stone-200 bg-white">
+                            <button onclick="playAudio('${currentSituation.dua.ar}')" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-indigo-500 bg-indigo-50 px-3 py-1.5 rounded-full mb-6 active:scale-95 transition-all">
+                                <i data-lucide="volume-2" class="w-4 h-4"></i> Écouter
+                            </button>
+                            <p class="amiri text-3xl text-stone-800 text-right mb-6 leading-loose">${currentSituation.dua.ar}</p>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
+                                <p class="text-xs text-stone-400 font-bold uppercase tracking-widest mb-1">Prononciation</p>
+                                <p class="text-sm text-stone-700 font-medium">${currentSituation.dua.tr}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-stone-400 font-bold uppercase tracking-widest mb-1">Sens</p>
+                                <p class="text-base text-stone-600 italic leading-relaxed">"${currentSituation.dua.fr}"</p>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            else if (currentStep === 5) {
+                document.getElementById('step-title').innerText = "5. Ta Demande Personnelle";
+                html = `
+                    <div class="fade-up pt-6 pb-4">
+                        <div class="text-center mb-6">
+                            <div class="text-5xl mb-4 anim-pulse">🤲</div>
+                            <p class="text-sm text-stone-600 leading-relaxed">Les portes du Ciel sont ouvertes.</p>
+                            <p class="text-sm font-bold text-rose-500 mt-2">Parle-Lui avec tes propres mots en français, Il t'écoute.</p>
+                        </div>
+                        <textarea id="custom-dua-text" rows="5" placeholder="Ô Allah, je Te demande de..." class="w-full rounded-2xl px-5 py-4 text-base outline-none border focus:border-rose-300 shadow-sm resize-none bg-white" style="color:var(--text);"></textarea>
+                    </div>`;
+            }
+
+            content.innerHTML = html;
+            lucide.createIcons();
+
+            const btn = document.getElementById('builder-next-btn');
+            if (currentStep < 5) {
+                btn.innerText = "Étape Suivante ➔";
+                btn.onclick = () => { currentStep++; renderBuilderStep(); };
+            } else {
+                btn.innerText = "Terminer et Sauvegarder ✨";
+                btn.onclick = () => finishDua();
+            }
+        }
+
+        // ============ FINIR ET SAUVEGARDER ============
+        function finishDua() {
+            const customText = document.getElementById('custom-dua-text').value.trim();
+            
+            if (customText !== "") {
+                let savedDuas = JSON.parse(localStorage.getItem('samia-journal-duas')) || [];
+                const newDua = {
+                    theme: currentSituation.title,
+                    text: customText,
+                    date: new Date().toLocaleDateString('fr-FR'),
+                    timestamp: Date.now()
+                };
+                savedDuas.push(newDua);
+                localStorage.setItem('samia-journal-duas', JSON.stringify(savedDuas));
+            }
+            showView('success-view');
+        }
+
+        // ============ AFFICHER LE JOURNAL ============
+        window.openJournal = () => {
+            const list = document.getElementById('journal-list');
+            let savedDuas = JSON.parse(localStorage.getItem('samia-journal-duas')) || [];
+            
+            if (savedDuas.length === 0) {
+                list.innerHTML = `<p class="text-stone-400 italic text-sm text-center py-10">Ton journal est vide pour le moment. Fais ta première invocation ! 🌸</p>`;
+            } else {
+                list.innerHTML = savedDuas.sort((a,b) => b.timestamp - a.timestamp).map((dua, i) => `
+                    <div class="card p-5 mb-4 fade-up" style="animation-delay: ${i * 0.1}s">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-rose-400 bg-rose-50 px-2 py-1 rounded-md">${dua.theme}</span>
+                            <span class="text-xs text-stone-400 font-mono">${dua.date}</span>
+                        </div>
+                        <p class="text-sm text-stone-600 leading-relaxed mt-3">"${dua.text}"</p>
+                    </div>
+                `).join('');
+            }
+            showView('journal-view');
+        }
+
+        // ============ RENDER DUAS QUOTIDIEN ============
+        // ============ RENDER DUAS QUOTIDIEN ============
+        window.openDailyDuas = () => {
+            const list = document.getElementById('daily-list');
+            list.innerHTML = DAILY_DUAS.map((category, i) => `
+                <div class="mb-6 fade-up" style="animation-delay: ${i * 0.1}s">
+                    <h2 class="flex items-center gap-2 font-bold text-stone-800 text-lg mb-3">
+                        <span>${category.icon}</span> ${category.title}
+                    </h2>
+                    <div class="space-y-3">
+                        ${category.list.map(dua => `
+                            <details class="card p-4 group cursor-pointer outline-none bg-white">
+                                <summary class="font-bold text-sm text-stone-800 flex justify-between items-center list-none">
+                                    ${dua.t}
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-stone-300 group-open:rotate-180 transition-transform"></i>
+                                </summary>
+                                <div class="mt-4 border-t border-stone-100 pt-4">
+                                    <button onclick="playAudio('${dua.ar.replace(/'/g, "\\'")}')" class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-rose-500 bg-rose-50 px-2.5 py-1 rounded-full mb-4 active:scale-95 transition-all">
+                                        <i data-lucide="volume-2" class="w-3 h-3"></i> Écouter
+                                    </button>
+                                    <p class="amiri text-2xl text-stone-800 text-right leading-loose mb-3">${dua.ar}</p>
+                                    <p class="text-sm text-stone-600 italic leading-relaxed">"${dua.fr}"</p>
+                                </div>
+                            </details>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+            showView('daily-view');
+        }
+
+        // ============ AUDIO ============
+        window.playAudio = (text) => {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utt = new SpeechSynthesisUtterance(text);
+                utt.lang = 'ar-SA'; utt.rate = 0.75;
+                window.speechSynthesis.speak(utt);
+            } else alert("Ton navigateur ne supporte pas la lecture audio.");
+        };
+
+        document.addEventListener("DOMContentLoaded", () => { renderHome(); });
+    </script>
+</head>
+<body class="pb-10">
+
+<div id="home-view" class="px-5">
+    <header class="pt-16 pb-6 flex justify-between items-start">
+        <div>
+            <p class="text-xs uppercase font-bold tracking-widest text-stone-400 mb-1">Dua Builder</p>
+            <h1 class="playfair text-4xl font-bold" style="color:#3D2B2B">L'Arme du Croyant 🤲</h1>
+        </div>
+        <button onclick="openJournal()" class="w-12 h-12 bg-white border border-stone-200 rounded-2xl flex items-center justify-center shadow-sm active:scale-95 transition-all">
+            <i data-lucide="book-heart" class="w-5 h-5 text-rose-400"></i>
+        </button>
+    </header>
+
+    <button onclick="openDailyDuas()" class="w-full card p-4 mb-8 flex items-center justify-between active:scale-95 transition-all" style="background: linear-gradient(135deg, #F9EEE8, #F0D8D8); border-color: #E8C4C4;">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">📖</span>
+            <div class="text-left">
+                <p class="font-bold text-stone-800">Les Duas du Quotidien</p>
+                <p class="text-xs text-stone-500">Matin, soir, maison, voiture...</p>
+            </div>
+        </div>
+        <i data-lucide="chevron-right" class="w-5 h-5 text-stone-400"></i>
+    </button>
+
+    <h2 class="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-4">Invocations profondes (Pas-à-pas)</h2>
+    <div class="grid grid-cols-1 gap-4" id="categories-grid"></div>
+</div>
+
+<div id="situations-view" class="hidden px-5">
+    <header class="pt-12 pb-6">
+        <button onclick="showView('home-view')" class="flex items-center gap-1.5 text-stone-400 font-bold text-xs uppercase tracking-widest mb-6 active:scale-95">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Retour
+        </button>
+        <div class="flex items-center gap-3">
+            <span id="sit-emoji" class="text-4xl"></span>
+            <h1 class="playfair text-3xl font-bold text-stone-800" id="sit-title"></h1>
+        </div>
+    </header>
+    <div id="situations-list" class="space-y-2"></div>
+</div>
+
+<div id="builder-view" class="hidden px-5 flex flex-col min-h-screen">
+    <header class="pt-10 pb-4 shrink-0">
+        <button onclick="showView('situations-view')" class="flex items-center gap-1.5 text-stone-400 font-bold text-xs uppercase tracking-widest mb-4">
+            <i data-lucide="x" class="w-4 h-4"></i> Annuler
+        </button>
+        <div class="flex justify-between items-end mb-2">
+            <h2 id="step-title" class="font-bold text-lg text-stone-800"></h2>
+            <span id="step-indicator" class="text-[10px] uppercase font-black tracking-widest text-rose-400"></span>
+        </div>
+        <div class="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
+            <div id="builder-progress" class="bg-rose-400 h-1.5 rounded-full transition-all duration-300"></div>
+        </div>
+    </header>
+    <div id="builder-content" class="flex-1"></div>
+    <div class="shrink-0 py-6">
+        <button id="builder-next-btn" class="w-full rose-btn py-4 text-base shadow-lg"></button>
+    </div>
+</div>
+
+<div id="success-view" class="hidden px-5 flex flex-col items-center justify-center min-h-screen text-center pb-10 fade-up">
+    <div class="text-7xl mb-6">🕊️</div>
+    <h1 class="playfair text-4xl font-bold text-stone-800 mb-4">Invocation sauvegardée</h1>
+    <p class="text-stone-600 leading-relaxed mb-10 px-4">"Et votre Seigneur a dit : Appelez-Moi, Je vous répondrai." <br><span class="text-xs text-stone-400 italic">(Coran 40:60)</span></p>
+    <button onclick="showView('home-view')" class="w-full card py-4 text-stone-600 font-bold active:scale-95 transition-all border-stone-200 bg-stone-50">
+        Retour à l'accueil
+    </button>
+</div>
+
+<div id="journal-view" class="hidden px-5">
+    <header class="pt-12 pb-6">
+        <button onclick="showView('home-view')" class="flex items-center gap-1.5 text-stone-400 font-bold text-xs uppercase tracking-widest mb-6 active:scale-95">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Retour
+        </button>
+        <h1 class="playfair text-3xl font-bold text-stone-800">Mon Journal 📖</h1>
+        <p class="text-sm text-stone-500 mt-2">L'historique de tes échanges avec ton Seigneur.</p>
+    </header>
+    <div id="journal-list" class="pb-10"></div>
+</div>
+
+<div id="daily-view" class="hidden px-5">
+    <header class="pt-12 pb-6">
+        <button onclick="showView('home-view')" class="flex items-center gap-1.5 text-stone-400 font-bold text-xs uppercase tracking-widest mb-6 active:scale-95">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Retour
+        </button>
+        <h1 class="playfair text-3xl font-bold text-stone-800">Duas du Quotidien ☀️</h1>
+        <p class="text-sm text-stone-500 mt-2">La Citadelle pour protéger tes journées.</p>
+    </header>
+    <div id="daily-list" class="pb-10"></div>
+</div>
+
+</body>
+</html>
